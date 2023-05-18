@@ -4,7 +4,7 @@ import urlBuilder from "@/lib/urlBuilder";
 import { Model } from "@/types/model";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ModelScene from "./ModelScene";
 
@@ -12,7 +12,17 @@ type Props = {
   models: Model[];
 };
 
+const LoadingDiv = () => {
+  return (
+    <div className="w-full h-full m-auto flex justify-center items-center">
+      <progress className="progress w-56"></progress>
+    </div>
+  );
+};
+
 export default function ModelList({ models }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [showAllModels, setShowAllModels] = useState(false);
   const visibleModels = showAllModels ? models : models.slice(0, 5);
 
@@ -24,26 +34,40 @@ export default function ModelList({ models }: Props) {
     setShowAllModels(false);
   };
 
+  // Set loading state to false once data is loaded
+  useEffect(() => {
+    if (models) {
+      setLoading(false);
+    }
+  }, [models]);
+
   return (
     <>
       <div className="grid xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-8">
         {visibleModels.map((model: Model) =>
           model.attributes.featured ? (
             <div
-              className="xl:col-span-4 lg:col-span-2 col-span-1 shadow-xl h-[750px] rounded-2xl"
+              className="xl:col-span-4 lg:col-span-2 col-span-1 shadow-xl h-[750px] rounded-2xl bg-gray-500"
               key={model.id}
             >
               <div className="flex flex-rows justify-between h-full">
                 <div className="w-full rounded-l-2xl relative">
-                  <ModelScene
-                    url={model.attributes.file.data.attributes.url}
-                    isFeatured={true}
-                  />
+                  {loading ? (
+                    <LoadingDiv />
+                  ) : (
+                    <ModelScene
+                      url={model.attributes.file.data.attributes.url}
+                      isFeatured={true}
+                    />
+                  )}
+
                   <div className="absolute inset-0 flex flex-col justify-center text-white text-center">
-                    <h1 className="font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950 ">
+                    <h1 className="font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950">
                       Full Hero Canvas
                     </h1>
-                    <h3 className="font-light text-sm lg:text-md xl:text-xl">with TailwindCSS</h3>
+                    <h3 className="font-light text-sm lg:text-md xl:text-xl">
+                      with TailwindCSS
+                    </h3>
                   </div>
                   <div className="absolute inset-0 mt-auto lg:ml-auto xl:w-3/12 lg:w-1/3 min-w-[150px] h-2/5 lg:h-auto bg-purple-600/75 lg:px-8 lg:py-16 p-6 lg:rounded-tr-2xl lg:rounded-b-none rounded-b-2xl">
                     <div className="lg:w-[150px] lg:h-[150px] lg:pb-5">
@@ -86,7 +110,8 @@ export default function ModelList({ models }: Props) {
                   alt={model.attributes.name}
                   width={250}
                   height={300}
-                  className="h-64 w-full object-cover rounded-2xl"
+                  className={`h-64 w-full object-cover rounded-2xl ${imageLoaded ? "block" : "hidden"}`}
+                  onLoad={() => setImageLoaded(true)}
                 />
                 <div className="absolute inset-0 flex flex-col justify-center text-white text-center ">
                   <h2 className="font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950 ">
