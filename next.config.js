@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ["main-web-ar.netlify.app"],
+    domains: ["https://main-web-ar.netlify.app/"],
     unoptimized: true
   }
 }
