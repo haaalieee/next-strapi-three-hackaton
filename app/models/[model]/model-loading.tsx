@@ -1,7 +1,7 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-export default function Loading() {
+export default function ModelLoading() {
   return (
     <>
       <div className="text-sm breadcrumbs mb-10">

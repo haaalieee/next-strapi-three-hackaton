@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ModelScene from "../../../components/ModelScene";
-import Loading from "./loading";
+import ModelLoading from "./model-loading";
 
 type Props = {
   params: { model: string };
@@ -27,7 +27,7 @@ export default async function Model({ params }: Props) {
           </li>
         </ul>
       </div>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<ModelLoading />}>
         <div className="grid items-center gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_700px]">
           <div className="h-[50rem] bg-gray-200 rounded-2xl">
             <ModelScene
