@@ -5,6 +5,7 @@ import { Loader, OrbitControls, Stage } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect, useState } from "react";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import LoaderDiv from "./LoaderDiv";
 
 interface GLTFProps {
   url: string;
@@ -63,5 +64,7 @@ export default function ModelScene({ url, isFeatured }: GLTFProps) {
       </Canvas>
       <Loader />
     </>
-  ) : null;
+  ) : (
+    <LoaderDiv />
+  );
 }

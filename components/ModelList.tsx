@@ -4,7 +4,7 @@ import urlBuilder from "@/lib/urlBuilder";
 import { Model } from "@/types/model";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import ModelScene from "./ModelScene";
 
@@ -12,17 +12,8 @@ type Props = {
   models: Model[];
 };
 
-const LoadingDiv = () => {
-  return (
-    <div className="w-full h-full m-auto flex justify-center items-center">
-      <progress className="progress w-56"></progress>
-    </div>
-  );
-};
-
 export default function ModelList({ models }: Props) {
-  const [loading, setLoading] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  // const [loading, setLoading] = useState(true);
   const [showAllModels, setShowAllModels] = useState(false);
   const visibleModels = showAllModels ? models : models.slice(0, 5);
 
@@ -33,13 +24,6 @@ export default function ModelList({ models }: Props) {
   const handleSeeLessClick = () => {
     setShowAllModels(false);
   };
-
-  // Set loading state to false once data is loaded
-  useEffect(() => {
-    if (models) {
-      setLoading(false);
-    }
-  }, [models]);
 
   return (
     <>
@@ -52,15 +36,10 @@ export default function ModelList({ models }: Props) {
             >
               <div className="flex flex-rows justify-between h-full">
                 <div className="w-full rounded-l-2xl relative">
-                  {loading ? (
-                    <LoadingDiv />
-                  ) : (
-                    <ModelScene
-                      url={model.attributes.file.data.attributes.url}
-                      isFeatured={true}
-                    />
-                  )}
-
+                  <ModelScene
+                    url={model.attributes.file.data.attributes.url}
+                    isFeatured={true}
+                  />
                   <div className="absolute inset-0 flex flex-col justify-center text-white text-center">
                     <h1 className="font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950">
                       Full Hero Canvas
@@ -79,6 +58,8 @@ export default function ModelList({ models }: Props) {
                         width={150}
                         height={150}
                         alt="Model QR Code"
+                        placeholder="blur"
+                        blurDataURL="./assets/image-placeholder.png"
                       />
                     </div>
                     <h2 className="py-3 lg:py-6 font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950 text-white">
@@ -110,8 +91,9 @@ export default function ModelList({ models }: Props) {
                   alt={model.attributes.name}
                   width={250}
                   height={300}
-                  className={`h-64 w-full object-cover rounded-2xl ${imageLoaded ? "block" : "hidden"}`}
-                  onLoad={() => setImageLoaded(true)}
+                  className="h-64 w-full object-cover rounded-2xl"
+                  placeholder="blur"
+                  blurDataURL="./assets/image-placeholder.png"
                 />
                 <div className="absolute inset-0 flex flex-col justify-center text-white text-center ">
                   <h2 className="font-bold xl:text-5xl lg:text-2xl text-4xl shadow-neutral-950 ">
@@ -122,7 +104,7 @@ export default function ModelList({ models }: Props) {
                       : model.attributes.name}
                   </h2>
                 </div>
-                <div className="absolute inset-5 ml-auto w-[50px] h-[50px] bg-black ">
+                <div className="absolute inset-5 ml-auto w-[50px] h-[50px] bg-gray-500">
                   <Image
                     className="w-full h-full object-cover"
                     src={urlBuilder(
@@ -131,6 +113,8 @@ export default function ModelList({ models }: Props) {
                     width={50}
                     height={50}
                     alt="Model QR Code"
+                    placeholder="blur"
+                    blurDataURL="./assets/image-placeholder.png"
                   />
                 </div>
               </div>
