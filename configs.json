@@ -1,4 +1,4 @@
 {
-    "STRAPI_URL": "https://cms-strapi-hackaton.herokuapp.com",
+    "STRAPI_URL": "http://127.0.0.1:1337",
     "STRAPI_DOMAIN": "strapi-qt33.onrender.com"
 }
